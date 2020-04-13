@@ -1,2 +1,6 @@
-# launcher
-Mod launcher
+## Work in progress
+
+## tools
+ElectronJS
+ReactJS
+TypeScript
