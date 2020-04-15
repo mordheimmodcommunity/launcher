@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/mordheimmodcommunity/launcher#readme",
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-angular": "^8.3.4",
     "@hot-loader/react-dom": "^16.13.0",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.6",
@@ -47,6 +49,7 @@
   },
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
   },
