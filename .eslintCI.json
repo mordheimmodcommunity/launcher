@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "lines-between-class-members": "warn",
+    "comma-dangle": ["warn", "always-multiline"]
+  }
+}
