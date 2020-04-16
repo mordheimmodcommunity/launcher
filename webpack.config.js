@@ -25,9 +25,7 @@ module.exports = [
     target: 'electron-renderer',
     devtool: 'source-map',
     resolve: {
-      alias: {
-        'react-dom': '@hot-loader/react-dom',
-      },
+      extensions: ['.js', '.ts', '.tsx'],
     },
     module: {
       rules: [

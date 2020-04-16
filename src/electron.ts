@@ -10,7 +10,7 @@ function createWindow(): void {
     },
   })
 
-  // and load the index.html of the app.
+  // load webpack-dev-server for live reload feature.
   if (process.env.NODE_ENV !== 'production') {
     process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1'
     win.loadURL(`http://localhost:8080`)

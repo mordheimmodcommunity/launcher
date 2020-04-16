@@ -1,0 +1,20 @@
+{
+  "vanilla": {
+    "name": "No Mod ( vanilla )",
+    "description": "",
+    "source": "Vanilla.zip",
+    "features": []
+  },
+  "paraMod": {
+    "name": "Paranoia Mod v1.3",
+    "description": "",
+    "source": "ParaMod.zip",
+    "features": []
+  },
+  "pvpMod": {
+    "name": "PvP Mod v1.0",
+    "description": "",
+    "source": "PvPMod.zip",
+    "features": []
+  }
+}
