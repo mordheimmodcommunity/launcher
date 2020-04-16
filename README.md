@@ -1,5 +1,18 @@
 ## Work in progress
 
+## Installation
+
+You need the latest version of [NodeJS](https://nodejs.org/en/download/)
+
+Git clone the repo on your machine, then
+
+```
+cd launcher
+npm install
+```
+
+To start the launcher use `npm start`
+
 ## tools
 
 [ElectronJS](https://www.electronjs.org/docs)
