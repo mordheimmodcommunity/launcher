@@ -8,10 +8,10 @@ export interface ModListProps {
     paraMod: boolean
     pvpMod: boolean
   }
-  checkMod: (mod: string) => void
+  selectMod: (mod: string) => void
 }
 
-const ModList = ({ modList, checkMod }: ModListProps): JSX.Element => {
+const ModList = ({ modList, selectMod }: ModListProps): JSX.Element => {
   const getModName = (mod: string): string => {
     if (mod === 'vanilla') return 'No Mod ( vanilla )'
     return modsData[mod].name
@@ -24,7 +24,7 @@ const ModList = ({ modList, checkMod }: ModListProps): JSX.Element => {
             key={mod}
             type='checkbox'
             name={mod}
-            onClick={(): void => checkMod(mod)}
+            onClick={(): void => selectMod(mod)}
             checked={modList[mod]}
           />
           <label key={mod}> {getModName(mod)} </label>

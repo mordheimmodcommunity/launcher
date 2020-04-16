@@ -48,7 +48,7 @@ class App extends React.Component<AppProps, AppState> {
     await this.setupAllModFolder()
   }
 
-  checkMod = (mod: string): void => {
+  selectMod = (mod: string): void => {
     const newModList = {
       vanilla: false,
       paraMod: false,
@@ -157,7 +157,7 @@ class App extends React.Component<AppProps, AppState> {
     }
   }
 
-  checkDirectory = async (directoryPath): Promise<void> => {
+  checkDirectory = async (directoryPath: string): Promise<void> => {
     try {
       if (!directoryPath) throw new Error('invalid directoryPath')
       const mordheimDir = await fs.readdir(directoryPath)
@@ -200,7 +200,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   render(): JSX.Element {
-    const { searchDirectory, checkMod, installMod, play } = this
+    const { searchDirectory, selectMod, installMod, play } = this
     const { mordheimDirectory, searchError, modList, install } = this.state
     const disabled = searchError || !mordheimDirectory || install
     return (
@@ -220,7 +220,7 @@ class App extends React.Component<AppProps, AppState> {
           mordheimDirectory={mordheimDirectory}
           searchError={searchError}
         />
-        <ModList modList={modList} checkMod={checkMod} />
+        <ModList modList={modList} selectMod={selectMod} />
         <button
           onClick={(): void => this.setState({ install: true }, installMod)}
           disabled={disabled}
