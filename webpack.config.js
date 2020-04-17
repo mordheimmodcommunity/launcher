@@ -5,6 +5,9 @@ module.exports = [
     mode: 'development',
     entry: './src/electron.ts',
     target: 'electron-main',
+    node: {
+      __dirname: true,
+    },
     module: {
       rules: [
         {
@@ -24,6 +27,9 @@ module.exports = [
     entry: './src/react.tsx',
     target: 'electron-renderer',
     devtool: 'source-map',
+    node: {
+      __dirname: true,
+    },
     resolve: {
       extensions: ['.js', '.ts', '.tsx'],
     },
