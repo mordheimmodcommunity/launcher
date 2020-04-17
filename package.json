@@ -2,12 +2,17 @@
   "name": "mod-launcher",
   "version": "1.0.0",
   "description": "ElectronJS",
+  "main": "./dist/electron.js",
   "scripts": {
     "start": "run-p start-electron start-dev",
     "start-electron": "npm run build && electron ./dist/electron.js",
     "start-dev": "webpack-dev-server",
     "build": "webpack --config ./webpack.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:prod": "webpack --config ./webpack.prod.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "electron-builder install-app-deps",
+    "pack": "npm run build:prod && electron-builder --dir",
+    "dist": "npm run build:prod && electron-builder"
   },
   "repository": {
     "type": "git",
@@ -19,6 +24,39 @@
     "url": "https://github.com/mordheimmodcommunity/launcher/issues"
   },
   "homepage": "https://github.com/mordheimmodcommunity/launcher#readme",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{json,md}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
+      "eslint --fix -c .eslintCI.json"
+    ]
+  },
+  "build": {
+    "appId": "com.mordheim.launcher",
+    "productName": "launcher",
+    "directories": {
+      "output": "./release"
+    },
+    "files": [
+      "dist/",
+      "node_modules/",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "./icon.png"
+    },
+    "linux": {
+      "target": "deb"
+    }
+  },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-angular": "^8.3.4",
@@ -27,6 +65,7 @@
     "@typescript-eslint/eslint-plugin": "^2.28.0",
     "@typescript-eslint/parser": "^2.28.0",
     "electron": "^8.2.2",
+    "electron-builder": "^22.5.1",
     "electron-reload": "^1.5.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
@@ -45,19 +84,5 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{json,md}": [
-      "prettier --write"
-    ],
-    "*.{ts,tsx}": [
-      "eslint --fix -c .eslintCI.json"
-    ]
   }
 }

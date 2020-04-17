@@ -14,10 +14,10 @@ function createWindow(): void {
   if (process.env.NODE_ENV !== 'production') {
     process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1'
     win.loadURL(`http://localhost:8080`)
-  } else win.loadFile('index.html')
 
-  // Open the DevTools.
-  win.webContents.openDevTools()
+    // Open the DevTools.
+    win.webContents.openDevTools()
+  } else win.loadFile('./dist/index.html')
 }
 
 // This method will be called when Electron has finished

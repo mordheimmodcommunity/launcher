@@ -19,15 +19,15 @@ const ModList = ({ modList, selectMod }: ModListProps): JSX.Element => {
   return (
     <div>
       {Object.keys(modList).map((mod) => (
-        <div key={mod} style={{ display: 'flex' }}>
+        <div key={`${mod}_div`} style={{ display: 'flex' }}>
           <input
-            key={mod}
+            key={`${mod}_input`}
             type='checkbox'
             name={mod}
-            onClick={(): void => selectMod(mod)}
+            onChange={(): void => selectMod(mod)}
             checked={modList[mod]}
           />
-          <label key={mod}> {getModName(mod)} </label>
+          <label key={`${mod}_label`}> {getModName(mod)} </label>
         </div>
       ))}
     </div>

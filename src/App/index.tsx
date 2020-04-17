@@ -25,7 +25,7 @@ class App extends React.Component<AppProps, AppState> {
   state = {
     mordheimDirectory: null,
     searchError: false,
-    install: false,
+    install: true,
     modList: {
       vanilla: true,
       paraMod: false,
@@ -46,6 +46,7 @@ class App extends React.Component<AppProps, AppState> {
       'C:/Program Files (x86)/Steam/SteamApps/common/mordheim',
     )
     await this.setupAllModFolder()
+    this.setState({ install: false })
   }
 
   selectMod = (mod: string): void => {
@@ -157,7 +158,7 @@ class App extends React.Component<AppProps, AppState> {
     }
   }
 
-  checkDirectory = async (directoryPath: string): Promise<void> => {
+  checkDirectory = async (directoryPath: string | null): Promise<void> => {
     try {
       if (!directoryPath) throw new Error('invalid directoryPath')
       const mordheimDir = await fs.readdir(directoryPath)
@@ -194,7 +195,8 @@ class App extends React.Component<AppProps, AppState> {
       properties: ['openDirectory'],
     })
 
-    const mordheimDirectory = getFolder && getFolder[0].replace(/\\/g, '/')
+    const mordheimDirectory =
+      (getFolder && getFolder[0].replace(/\\/g, '/')) || null
 
     this.checkDirectory(mordheimDirectory)
   }

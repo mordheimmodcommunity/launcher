@@ -1,8 +1,10 @@
 node_modules
 .vscode
 dist
+release
 ParaMod
 PvPMod
 Vanilla
 ParaMod.zip
 Vanilla.zip
+PvPMod.zip
