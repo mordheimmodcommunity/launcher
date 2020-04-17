@@ -8,6 +8,11 @@ module.exports = [
     node: {
       __dirname: true,
     },
+    resolve: {
+      alias: {
+        '7zip-min': __dirname + '/7zip-min/index.js',
+      },
+    },
     module: {
       rules: [
         {
@@ -32,6 +37,9 @@ module.exports = [
     },
     resolve: {
       extensions: ['.js', '.ts', '.tsx'],
+      alias: {
+        '7zip-min': __dirname + '/7zip-min/index.js',
+      },
     },
     module: {
       rules: [

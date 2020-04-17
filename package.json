@@ -46,7 +46,7 @@
     },
     "files": [
       "dist/",
-      "node_modules/",
+      "7zip-min/",
       "package.json"
     ],
     "win": {
