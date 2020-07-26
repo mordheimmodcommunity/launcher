@@ -110,46 +110,56 @@ class App extends React.Component<AppProps, AppState> {
         (mod: string): boolean => modList[mod],
       )
 
-      if (!modToInstall)
-        throw new Error('no mod to install: should not happens!')
-
-      try {
-        fs.copyFileSync(
-          `./${this.getModFolderName(modToInstall)}/Assembly-CSharp.dll`,
-          `${mordheimDirectory}/mordheim_Data/Managed/Assembly-CSharp.dll`,
-        )
-      } catch (e) {
-        console.warn(e)
-      }
-      try {
-        fs.copyFileSync(
-          `./${this.getModFolderName(modToInstall)}/UnityEngine.dll`,
-          `${mordheimDirectory}/mordheim_Data/Managed/UnityEngine.dll`,
-        )
-      } catch (e) {
-        console.warn(e)
-      }
-      try {
-        fs.copyFileSync(
-          `./${this.getModFolderName(modToInstall)}/mordheim`,
-          `${mordheimDirectory}/mordheim_Data/StreamingAssets/database/mordheim`,
-        )
-      } catch (e) {
-        console.warn(e)
-      }
-      try {
-        fs.copyFileSync(
-          `./${this.getModFolderName(modToInstall)}/resources.assets`,
-          `${mordheimDirectory}/mordheim_Data/resources.assets`,
-        )
-      } catch (e) {
-        console.warn(e)
-      }
+      this.resetGameFiles()
+      this.copyModFiles(modToInstall)
     } catch (e) {
       console.warn(e)
     }
 
     this.setState({ install: false })
+  }
+
+  resetGameFiles = (): void => {
+    this.copyModFiles('vanilla')
+  }
+
+  copyModFiles = (modToInstall: string | undefined): void => {
+    const { mordheimDirectory } = this.state
+
+    if (!modToInstall) throw new Error('no mod to install: should not happens!')
+
+    try {
+      fs.copyFileSync(
+        `./${this.getModFolderName(modToInstall)}/Assembly-CSharp.dll`,
+        `${mordheimDirectory}/mordheim_Data/Managed/Assembly-CSharp.dll`,
+      )
+    } catch (e) {
+      console.warn(e)
+    }
+    try {
+      fs.copyFileSync(
+        `./${this.getModFolderName(modToInstall)}/UnityEngine.dll`,
+        `${mordheimDirectory}/mordheim_Data/Managed/UnityEngine.dll`,
+      )
+    } catch (e) {
+      console.warn(e)
+    }
+    try {
+      fs.copyFileSync(
+        `./${this.getModFolderName(modToInstall)}/mordheim`,
+        `${mordheimDirectory}/mordheim_Data/StreamingAssets/database/mordheim`,
+      )
+    } catch (e) {
+      console.warn(e)
+    }
+    try {
+      fs.copyFileSync(
+        `./${this.getModFolderName(modToInstall)}/resources.assets`,
+        `${mordheimDirectory}/mordheim_Data/resources.assets`,
+      )
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   checkDirectory = async (directoryPath: string | null): Promise<void> => {
