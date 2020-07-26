@@ -33,20 +33,20 @@ class App extends React.Component<AppProps, AppState> {
     },
   }
 
-  getModFolderName = (mod: string): string => {
-    return {
-      vanilla: 'Vanilla',
-      paraMod: 'ParaMod',
-      pvpMod: 'PvPMod',
-    }[mod]
-  }
-
   componentDidMount = async (): Promise<void> => {
     await this.checkDirectory(
       'C:/Program Files (x86)/Steam/SteamApps/common/mordheim',
     )
     await this.setupAllModFolder()
     this.setState({ install: false })
+  }
+
+  getModFolderName = (mod: string): string => {
+    return modsData[mod].folder
+  }
+
+  getModZipName = (mod: string): string => {
+    return modsData[mod].source
   }
 
   selectMod = (mod: string): void => {
@@ -69,8 +69,7 @@ class App extends React.Component<AppProps, AppState> {
     const setupModFolderPromiseList = [
       ...Object.keys(modList).map(async (mod: string) => {
         try {
-          const modDir = fs.readdirSync(this.getModFolderName(mod))
-          if (modDir && modDir.length > 0) return
+          fs.rmdirSync(this.getModFolderName(mod), { recursive: true })
         } catch (e) {
           console.warn(e)
         }
@@ -83,7 +82,7 @@ class App extends React.Component<AppProps, AppState> {
 
         try {
           await unzip(
-            `${process.cwd()}/${modsData[mod].source}`,
+            `${process.cwd()}/${this.getModZipName(mod)}`,
             `${process.cwd()}/${this.getModFolderName(mod)}`,
           )
         } catch (e) {
