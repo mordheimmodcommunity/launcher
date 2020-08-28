@@ -1,9 +1,9 @@
 {
   "mods": {
-    "vanilla": {
-      "name": "No Mod ( vanilla )",
+    "classic": {
+      "name": "No Mod ( classic )",
       "description": "",
-      "source": "Vanilla.zip",
+      "source": "Classic.zip",
       "features": []
     },
     "paraMod": {

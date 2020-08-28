@@ -13,9 +13,17 @@ export interface ModsData {
 }
 
 const modsData: ModsData = JSON.parse(
-  fs.readFileSync(`${process.cwd()}/mods.json`, {
+  fs.readFileSync(`Mods/mods.json`, {
     encoding: 'utf8',
   }),
+)
+
+const defaultModList: {} = Object.keys(modsData.mods).reduce(
+  (reducer, modKey) => {
+    if (modKey === 'classic') return { ...reducer, [modKey]: true }
+    return { ...reducer, [modKey]: false }
+  },
+  {},
 )
 
 export interface AppProps {}
@@ -32,17 +40,13 @@ class App extends React.Component<AppProps, AppState> {
     mordheimDirectory: null,
     searchError: false,
     install: true,
-    modList: Object.keys(modsData.mods).reduce((reducer, modKey) => {
-      if (modKey === 'vanilla') return { ...reducer, [modKey]: true }
-      return { ...reducer, [modKey]: false }
-    }, {}),
+    modList: defaultModList,
   }
 
   componentDidMount = async (): Promise<void> => {
     await this.checkDirectory(
       'C:/Program Files (x86)/Steam/SteamApps/common/mordheim',
     )
-    await this.setupAllModFolder()
     this.setState({ install: false })
   }
 
@@ -55,52 +59,13 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   selectMod = (mod: string): void => {
-    const newModList = {
-      vanilla: false,
-      paraMod: false,
-      pvpMod: false,
-    }
-
+    const newModList = { ...defaultModList }
+    newModList['classic'] = false
     newModList[mod] = true
 
     this.setState({
       modList: newModList,
     })
-  }
-
-  setupAllModFolder = async (): Promise<void> => {
-    const { modList } = this.state
-
-    const setupModFolderPromiseList = [
-      ...Object.keys(modList).map(async (mod: string) => {
-        try {
-          fs.rmdirSync(this.getModFolderName(mod), { recursive: true })
-        } catch (e) {
-          console.warn(e)
-        }
-
-        try {
-          fs.mkdirSync(this.getModFolderName(mod))
-        } catch (e) {
-          console.warn(e)
-        }
-
-        try {
-          await unzip(
-            `${process.cwd()}/${this.getModZipName(mod)}`,
-            `${process.cwd()}/${this.getModFolderName(mod)}`,
-          )
-        } catch (e) {
-          console.warn(e)
-        }
-      }),
-    ]
-
-    try {
-      await Promise.all(setupModFolderPromiseList)
-    } catch (e) {
-      console.warn(e)
-    }
   }
 
   installMod = async (): Promise<void> => {
@@ -114,7 +79,11 @@ class App extends React.Component<AppProps, AppState> {
         (mod: string): boolean => modList[mod],
       )
 
-      this.resetGameFiles()
+      if (!modToInstall)
+        throw new Error('no mod to install: should not happens!')
+
+      await this.resetGameFiles()
+      await this.unzipMod(modToInstall)
       this.copyModFiles(modToInstall)
     } catch (e) {
       console.warn(e)
@@ -123,26 +92,58 @@ class App extends React.Component<AppProps, AppState> {
     this.setState({ install: false })
   }
 
-  resetGameFiles = (): void => {
-    this.copyModFiles('vanilla')
+  resetGameFiles = async (): Promise<void> => {
+    await this.unzipMod('classic')
+    this.copyModFiles('classic')
   }
 
-  copyModFiles = (modToInstall: string | undefined): void => {
-    const { mordheimDirectory } = this.state
+  unzipMod = async (mod: string): Promise<void> => {
+    try {
+      fs.rmdirSync(this.getModFolderName(mod), { recursive: true })
+    } catch (e) {
+      console.warn(e)
+    }
 
-    if (!modToInstall) throw new Error('no mod to install: should not happens!')
+    try {
+      fs.mkdirSync(this.getModFolderName(mod))
+    } catch (e) {
+      console.warn(e)
+    }
+
+    try {
+      await unzip(
+        `${process.cwd()}/Mods/${this.getModZipName(mod)}`,
+        `${process.cwd()}/${this.getModFolderName(mod)}`,
+      )
+    } catch (e) {
+      console.warn(e)
+    }
+  }
+
+  copyModFiles = (mod: string): void => {
+    const { mordheimDirectory } = this.state
 
     modsData.files.forEach((filePath) => {
       const fileName = filePath.split('/').pop()
       try {
         fs.copyFileSync(
-          `${process.cwd()}/${this.getModFolderName(modToInstall)}/${fileName}`,
+          `${this.getModFolderName(mod)}/${fileName}`,
           `${mordheimDirectory}/${filePath}`,
         )
       } catch (e) {
         console.warn(e)
       }
     })
+
+    this.removeModFolder(mod)
+  }
+
+  removeModFolder = (mod: string): void => {
+    try {
+      fs.rmdirSync(this.getModFolderName(mod), { recursive: true })
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   searchDirectory = (): void => {

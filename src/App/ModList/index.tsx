@@ -14,10 +14,8 @@ const ModList = ({
   selectMod,
   modsData,
 }: ModListProps): JSX.Element => {
-  const getModName = (mod: string): string => {
-    if (mod === 'vanilla') return 'No Mod ( vanilla )'
-    return modsData.mods[mod].name
-  }
+  const getModName = (mod: string): string => modsData.mods[mod].name
+
   return (
     <div>
       {Object.keys(modList).map((mod) => (
