@@ -1,20 +1,22 @@
 import React from 'react'
 
-import modsData from '../data/mods.json'
-
 export interface ModListProps {
-  modList: {
-    vanilla: boolean
-    paraMod: boolean
-    pvpMod: boolean
-  }
+  modList: {}
   selectMod: (mod: string) => void
+  modsData: {
+    mods: {}
+    files: string[]
+  }
 }
 
-const ModList = ({ modList, selectMod }: ModListProps): JSX.Element => {
+const ModList = ({
+  modList,
+  selectMod,
+  modsData,
+}: ModListProps): JSX.Element => {
   const getModName = (mod: string): string => {
     if (mod === 'vanilla') return 'No Mod ( vanilla )'
-    return modsData[mod].name
+    return modsData.mods[mod].name
   }
   return (
     <div>

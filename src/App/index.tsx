@@ -5,8 +5,18 @@ import { remote } from 'electron'
 
 import SearchMordheimFolder from './SearchMordheimFolder'
 import ModList from './ModList'
-import modsData from './data/mods.json'
 import unzip from './helpers/unzip'
+
+export interface ModsData {
+  mods: {}
+  files: string[]
+}
+
+const modsData: ModsData = JSON.parse(
+  fs.readFileSync(`${process.cwd()}/mods.json`, {
+    encoding: 'utf8',
+  }),
+)
 
 export interface AppProps {}
 
@@ -14,11 +24,7 @@ export interface AppState {
   mordheimDirectory: string | null
   searchError: boolean
   install: boolean
-  modList: {
-    vanilla: boolean
-    paraMod: boolean
-    pvpMod: boolean
-  }
+  modList: {}
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -26,11 +32,10 @@ class App extends React.Component<AppProps, AppState> {
     mordheimDirectory: null,
     searchError: false,
     install: true,
-    modList: {
-      vanilla: true,
-      paraMod: false,
-      pvpMod: false,
-    },
+    modList: Object.keys(modsData.mods).reduce((reducer, modKey) => {
+      if (modKey === 'vanilla') return { ...reducer, [modKey]: true }
+      return { ...reducer, [modKey]: false }
+    }, {}),
   }
 
   componentDidMount = async (): Promise<void> => {
@@ -42,11 +47,11 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   getModFolderName = (mod: string): string => {
-    return modsData[mod].folder
+    return modsData.mods[mod].source.split('.zip')[0]
   }
 
   getModZipName = (mod: string): string => {
-    return modsData[mod].source
+    return modsData.mods[mod].source
   }
 
   selectMod = (mod: string): void => {
@@ -127,38 +132,28 @@ class App extends React.Component<AppProps, AppState> {
 
     if (!modToInstall) throw new Error('no mod to install: should not happens!')
 
-    try {
-      fs.copyFileSync(
-        `./${this.getModFolderName(modToInstall)}/Assembly-CSharp.dll`,
-        `${mordheimDirectory}/mordheim_Data/Managed/Assembly-CSharp.dll`,
-      )
-    } catch (e) {
-      console.warn(e)
-    }
-    try {
-      fs.copyFileSync(
-        `./${this.getModFolderName(modToInstall)}/UnityEngine.dll`,
-        `${mordheimDirectory}/mordheim_Data/Managed/UnityEngine.dll`,
-      )
-    } catch (e) {
-      console.warn(e)
-    }
-    try {
-      fs.copyFileSync(
-        `./${this.getModFolderName(modToInstall)}/mordheim`,
-        `${mordheimDirectory}/mordheim_Data/StreamingAssets/database/mordheim`,
-      )
-    } catch (e) {
-      console.warn(e)
-    }
-    try {
-      fs.copyFileSync(
-        `./${this.getModFolderName(modToInstall)}/resources.assets`,
-        `${mordheimDirectory}/mordheim_Data/resources.assets`,
-      )
-    } catch (e) {
-      console.warn(e)
-    }
+    modsData.files.forEach((filePath) => {
+      const fileName = filePath.split('/').pop()
+      try {
+        fs.copyFileSync(
+          `${process.cwd()}/${this.getModFolderName(modToInstall)}/${fileName}`,
+          `${mordheimDirectory}/${filePath}`,
+        )
+      } catch (e) {
+        console.warn(e)
+      }
+    })
+  }
+
+  searchDirectory = (): void => {
+    const getFolder = remote.dialog.showOpenDialogSync({
+      properties: ['openDirectory'],
+    })
+
+    const mordheimDirectory =
+      (getFolder && getFolder[0].replace(/\\/g, '/')) || null
+
+    this.checkDirectory(mordheimDirectory)
   }
 
   checkDirectory = async (directoryPath: string | null): Promise<void> => {
@@ -193,17 +188,6 @@ class App extends React.Component<AppProps, AppState> {
     })
   }
 
-  searchDirectory = (): void => {
-    const getFolder = remote.dialog.showOpenDialogSync({
-      properties: ['openDirectory'],
-    })
-
-    const mordheimDirectory =
-      (getFolder && getFolder[0].replace(/\\/g, '/')) || null
-
-    this.checkDirectory(mordheimDirectory)
-  }
-
   render(): JSX.Element {
     const { searchDirectory, selectMod, installMod, play } = this
     const { mordheimDirectory, searchError, modList, install } = this.state
@@ -225,7 +209,7 @@ class App extends React.Component<AppProps, AppState> {
           mordheimDirectory={mordheimDirectory}
           searchError={searchError}
         />
-        <ModList modList={modList} selectMod={selectMod} />
+        <ModList modList={modList} selectMod={selectMod} modsData={modsData} />
         <button
           onClick={(): void => this.setState({ install: true }, installMod)}
           disabled={disabled}

@@ -1,0 +1,28 @@
+{
+  "mods": {
+    "vanilla": {
+      "name": "No Mod ( vanilla )",
+      "description": "",
+      "source": "Vanilla.zip",
+      "features": []
+    },
+    "paraMod": {
+      "name": "Paranoia Mod v1.3",
+      "description": "",
+      "source": "ParaMod.zip",
+      "features": []
+    },
+    "pvpMod": {
+      "name": "PvP Mod v1.0",
+      "description": "",
+      "source": "PvPMod.zip",
+      "features": []
+    }
+  },
+  "files": [
+    "mordheim_Data/Managed/Assembly-CSharp.dll",
+    "mordheim_Data/Managed/UnityEngine.dll",
+    "mordheim_Data/StreamingAssets/database/mordheim",
+    "mordheim_Data/resources.assets"
+  ]
+}
