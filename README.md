@@ -1,9 +1,9 @@
 # Mordheim mod launcher
 
-* [Install mod to the launcher](#install-new-mod-to-the-launcher)
+* [Install new mod to the launcher](#installing-a-mod-to-the-launcher)
 * [Contribute](#contribute)
 
-## Install new mod to the launcher
+## Installing a mod to the launcher
 
 
 ## Contribute
