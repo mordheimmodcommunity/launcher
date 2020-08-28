@@ -1,6 +1,13 @@
-## Work in progress
+# Mordheim mod launcher
 
-## Installation
+* [Install mod to the launcher](#install-new-mod-to-the-launcher)
+* [Contribute](#contribute)
+
+## Install new mod to the launcher
+
+
+## Contribute
+### Installation
 
 You need the latest version of [NodeJS](https://nodejs.org/en/download/)
 
@@ -13,7 +20,7 @@ npm install
 
 To start the launcher use `npm start`
 
-## tools
+### tools
 
 [ElectronJS](https://www.electronjs.org/docs)
 
@@ -21,7 +28,7 @@ To start the launcher use `npm start`
 
 [TypeScript](https://www.typescriptlang.org/docs/home.html)
 
-## CI
+### CI
 
 CI with eslint and prettier
 
