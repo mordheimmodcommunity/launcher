@@ -12,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "electron-builder install-app-deps",
     "pack": "npm run build:prod && electron-builder --dir && node scripts/pack",
-    "dist": "node scripts/dist",
+    "dist": "npm run pack && node scripts/dist",
     "installer": "npm run build:prod && electron-builder"
   },
   "repository": {
