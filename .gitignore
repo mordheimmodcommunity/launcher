@@ -2,6 +2,7 @@ node_modules
 .vscode
 dist
 build
+launcher
 ParaMod.zip
 Classic.zip
 PvPMod.zip

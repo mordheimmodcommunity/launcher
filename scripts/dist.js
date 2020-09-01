@@ -1,44 +1,50 @@
 // create the zip bundle for distribution
 const _7z = require('../7zip-min')
 const fs = require('fs')
+const appPackage = require('../package.json')
 
 fs.mkdirSync('build/dist', { recursive: true })
 
-_7z.pack('build/launcher', 'build/dist/launcher.zip', (err) => {
-  if (err) console.error(err)
-})
+if (fs.existsSync('build/dist/launcher.zip'))
+  fs.rmdirSync('build/dist/launcher.zip', { recursive: true })
 
-// create release on github
-const appPackage = require('../package.json')
+_7z.pack('launcher', `build/dist/launcher.zip`, (err) => {
+  if (err) return console.error(err)
 
-/* token from https://github.com/settings/applications */
-const githubToken = require('../github.api.json').token
+  // create release on github
+  /* token from https://github.com/settings/applications */
+  const githubToken = require('../github.api.json').token
 
-const grizzly = require('grizzly')
+  const grizzly = require('grizzly')
 
-grizzly(githubToken, {
-  user: 'mordheimmodcommunity',
-  repo: 'launcher',
-  tag: appPackage.version,
-  name: 'Mordheim Mod Launcher v' + appPackage.version,
-  body: '',
-  prerelease: false /* default */,
-}).catch((error) => {
-  console.error(error.message)
-})
-
-// upload zip to release on github
-const putasset = require('putasset')
-
-putasset(githubToken, {
-  owner: 'mordheimmodcommunity',
-  repo: 'launcher',
-  tag: appPackage.version,
-  filename: 'build/dist/launcher.zip',
-})
-  .then((url) => {
-    console.log(`Zip bundle uploaded with success, download url: ${url}`)
+  grizzly(githubToken, {
+    user: 'mordheimmodcommunity',
+    repo: 'launcher',
+    tag: appPackage.version,
+    name: 'Mordheim Mod Launcher v' + appPackage.version,
+    body: '',
+    prerelease: false /* default */,
   })
-  .catch((error) => {
-    console.error(error.message)
+    .catch((error) => {
+      console.error(error.message)
+    })
+    .then(() => {
+  // upload zip to release on github
+  const putasset = require('putasset')
+
+  putasset(githubToken, {
+    owner: 'mordheimmodcommunity',
+    repo: 'launcher',
+    tag: appPackage.version,
+    filename: 'build/dist/launcher.zip',
   })
+    .then((url) => {
+      console.log(
+        `Zip bundle uploaded with success, download url: https://github.com/mordheimmodcommunity/launcher/releases`,
+      )
+    })
+    .catch((error) => {
+      console.error(error.message)
+    })
+  // })
+})
