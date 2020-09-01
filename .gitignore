@@ -1,7 +1,9 @@
 node_modules
 .vscode
 dist
-release
+build
 ParaMod.zip
 Classic.zip
 PvPMod.zip
+Mods/files
+github.api.json

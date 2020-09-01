@@ -3,9 +3,9 @@ import fs from 'fs'
 import { exec } from 'child_process'
 import { remote } from 'electron'
 
-import SearchMordheimFolder from './SearchMordheimFolder'
-import ModList from './ModList'
-import unzip from './helpers/unzip'
+import SearchMordheimFolder from 'screens/Mods/SearchMordheimFolder'
+import ModList from 'screens/Mods/ModList'
+import unzip from 'library/utils/unzip'
 
 export interface ModsData {
   mods: {}
@@ -113,7 +113,7 @@ class App extends React.Component<AppProps, AppState> {
     try {
       await unzip(
         `${process.cwd()}/Mods/${this.getModZipName(mod)}`,
-        `${process.cwd()}/${this.getModFolderName(mod)}`,
+        `${process.cwd()}/Mods/${this.getModFolderName(mod)}`,
       )
     } catch (e) {
       console.warn(e)
@@ -127,7 +127,7 @@ class App extends React.Component<AppProps, AppState> {
       const fileName = filePath.split('/').pop()
       try {
         fs.copyFileSync(
-          `${this.getModFolderName(mod)}/${fileName}`,
+          `Mods/${this.getModFolderName(mod)}/${fileName}`,
           `${mordheimDirectory}/${filePath}`,
         )
       } catch (e) {

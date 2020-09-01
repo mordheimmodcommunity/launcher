@@ -6,7 +6,7 @@ const unzip = async (source: string, destination: string): Promise<void> => {
       () =>
         reject(
           new Error(
-            'unzip timeout, unzipping mods folder took too long, mods may not be installed correctly',
+            'unzip timeout, unzipping mod folder took too long, mod may not be installed correctly',
           ),
         ),
       10000,
