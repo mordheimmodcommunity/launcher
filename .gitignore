@@ -3,8 +3,11 @@ node_modules
 dist
 build
 launcher
+Mods/files
 ParaMod.zip
 Classic.zip
 PvPMod.zip
-Mods/files
+Classic
+ParaMod
+PvPMod
 github.api.json

@@ -1,25 +1,21 @@
 import React from 'react'
+import { observer } from 'mobx-react'
+import { useStore } from 'store'
+import { Button } from '@material-ui/core'
 
-export interface SearchMordheimFolderProps {
-  searchDirectory: () => void
-  mordheimDirectory: string | null
-  searchError: boolean
-}
+const SearchMordheimFolder = (): JSX.Element => {
+  const { searchDirectory, mordheimDirectory, searchError } = useStore()
 
-const SearchMordheimFolder = ({
-  searchDirectory,
-  mordheimDirectory,
-  searchError,
-}: SearchMordheimFolderProps): JSX.Element => {
   return (
     <div style={{ display: 'flex' }}>
-      <button
+      <Button
         onClick={(): void => {
           searchDirectory()
         }}
+        variant='contained'
       >
         Select mordheim directory
-      </button>
+      </Button>
       <div
         style={{
           color: (searchError && 'red') || undefined,
@@ -32,4 +28,4 @@ const SearchMordheimFolder = ({
   )
 }
 
-export default SearchMordheimFolder
+export default observer(SearchMordheimFolder)

@@ -1,37 +1,32 @@
 import React from 'react'
+import { observer } from 'mobx-react'
+import { useStore } from 'store'
+import { Radio, FormControlLabel } from '@material-ui/core'
 
-export interface ModListProps {
-  modList: {}
-  selectMod: (mod: string) => void
-  modsData: {
-    mods: {}
-    files: string[]
-  }
-}
+const ModList = (): JSX.Element => {
+  const { modList, selectMod, modsData } = useStore()
 
-const ModList = ({
-  modList,
-  selectMod,
-  modsData,
-}: ModListProps): JSX.Element => {
   const getModName = (mod: string): string => modsData.mods[mod].name
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       {Object.keys(modList).map((mod) => (
-        <div key={`${mod}_div`} style={{ display: 'flex' }}>
-          <input
-            key={`${mod}_input`}
-            type='checkbox'
-            name={mod}
-            onChange={(): void => selectMod(mod)}
-            checked={modList[mod]}
-          />
-          <label key={`${mod}_label`}> {getModName(mod)} </label>
-        </div>
+        <FormControlLabel
+          key={`${mod}_label`}
+          label={getModName(mod)}
+          labelPlacement='end'
+          control={
+            <Radio
+              key={`${mod}_input`}
+              name={mod}
+              onChange={(): void => selectMod(mod)}
+              checked={modList[mod]}
+            />
+          }
+        />
       ))}
     </div>
   )
 }
 
-export default ModList
+export default observer(ModList)

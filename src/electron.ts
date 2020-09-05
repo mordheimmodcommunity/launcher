@@ -4,10 +4,11 @@ function createWindow(): void {
   // Create the browser window.
   const win = new BrowserWindow({
     width: 1050,
-    height: 650,
+    height: 700,
     webPreferences: {
       nodeIntegration: true,
     },
+    frame: false,
   })
 
   // load webpack-dev-server for live reload feature.

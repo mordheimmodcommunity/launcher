@@ -1,16 +1,19 @@
 {
   "compilerOptions": {
     "jsx": "react",
+    "target": "ES2020",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strictNullChecks": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
+    "experimentalDecorators": true,
     "baseUrl": "./",
     "paths": {
       "library/*": ["./src/App/library/*"],
       "assets/*": ["./src/App/assets/*"],
-      "screens/*": ["./src/App/screens/*"]
+      "screens/*": ["./src/App/screens/*"],
+      "store": ["./src/App/store/index"]
     }
   }
 }
