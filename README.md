@@ -1,15 +1,17 @@
 # Mordheim mod launcher
 
-* [Install new mod to the launcher](#installing-a-mod-to-the-launcher)
-* [Contribute](#contribute)
+- [Install new mod to the launcher](#installing-a-mod-to-the-launcher)
+- [Contribute](#contribute)
 
 ## Installing a mod to the launcher
 
-
 ## Contribute
+
 ### Installation
 
 You need the latest version of [NodeJS](https://nodejs.org/en/download/)
+
+You need [git lfs](https://git-lfs.github.com/)
 
 Git clone the repo on your machine, then
 
