@@ -10,12 +10,14 @@
       "name": "Paranoia Mod v1.14.1",
       "description": "",
       "source": "ParaMod.zip",
+      "sourceRepository": "paranoia-mod",
       "features": []
     },
     "pvpMod": {
       "name": "PvP Mod v1.0",
       "description": "",
       "source": "PvPMod.zip",
+      "sourceRepository": "pvp-mod",
       "features": []
     }
   },

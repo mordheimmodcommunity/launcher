@@ -20,9 +20,9 @@ _7z.pack('launcher', `build/dist/launcher.zip`, (err) => {
   grizzly(githubToken, {
     user: 'mordheimmodcommunity',
     repo: 'launcher',
-    tag: appPackage.version,
+    tag: 'v' + appPackage.version,
     name: 'Mordheim Mod Launcher v' + appPackage.version,
-    body: '',
+    body: '### How to install\nDownload `launcher.zip`\nUnzip with [7zip](https://www.7-zip.org)\nStart `launcher.exe`',
     prerelease: false /* default */,
   })
     .catch((error) => {
